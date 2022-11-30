@@ -1,0 +1,118 @@
+import { FaEdit, FaCheckCircle, FaStopCircle } from 'react-icons/fa';
+// Bootstrap
+import Button from 'react-bootstrap/Button';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+// Components
+import Loader from '../../components/Loader';
+import ErrorMessage from '../../components/ErrorMessage';
+// Data Table
+import DataTable from '../../components/DataTable';
+// Queries
+import {
+  useGetUsuarios,
+  useSuspender,
+  useRestablecer,
+} from '../../queries/useAdmin';
+// Utils
+import { formatDateMed } from '../../utils/formatUtils';
+
+export default function Usuarios() {
+  const { isLoading, isError, error, data } = useGetUsuarios();
+  const { mutateAsync: suspender } = useSuspender();
+  const { mutateAsync: restablecer } = useRestablecer();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <ErrorMessage error={error.message} />;
+  }
+
+  const handleEdit = (id) => {
+    console.log(id);
+  };
+
+  const handleSuspend = async (id) => {
+    await suspender(id);
+  };
+
+  const handleRestablecer = async (id) => {
+    await restablecer(id);
+  };
+
+  // Data Table
+  // ----------
+  const columns = [
+    { Header: 'Nombre', accessor: 'nombre' },
+    { Header: 'Apellido', accessor: 'apellido' },
+    { Header: 'Ext.', accessor: 'extension' },
+    { Header: 'Email', accessor: 'email' },
+    { Header: 'Role', accessor: 'role.descripcion' },
+    {
+      Header: 'Verificado',
+      accessor: 'verificado',
+      Cell: ({ row }) => (row.original.verificado ? 'Sí' : 'Pendiente'),
+    },
+    {
+      Header: 'Ingreso Actual',
+      accessor: 'ingresoActual',
+      Cell: ({ row }) => formatDateMed(new Date(row.original.ingresoActual)),
+    },
+    {
+      Header: 'Estatus',
+      accessor: 'suspendido',
+      Cell: ({ row }) => {
+        return row.original.suspendido ? (
+          <span style={{ color: 'red' }}>Suspendido</span>
+        ) : (
+          <span style={{ color: 'green' }}>Activo</span>
+        );
+      },
+    },
+    {
+      Header: 'Acciones',
+      accessor: 'none',
+      Cell: (props) => {
+        return (
+          <div className='text-nowrap' style={{ textAlign: 'center' }}>
+            <Button
+              size='sm'
+              variant='primary'
+              onClick={() => handleEdit(props.row.original._id)}
+            >
+              <FaEdit />
+            </Button>{' '}
+            <OverlayTrigger overlay={<Tooltip>Reestablecer a usuario</Tooltip>}>
+              <Button
+                size='sm'
+                variant='success'
+                onClick={() => handleRestablecer(props.row.original._id)}
+              >
+                <FaCheckCircle />
+              </Button>
+            </OverlayTrigger>{' '}
+            <OverlayTrigger overlay={<Tooltip>Suspender a usuario</Tooltip>}>
+              <Button
+                size='sm'
+                variant='danger'
+                onClick={() => handleSuspend(props.row.original._id)}
+              >
+                <FaStopCircle />
+              </Button>
+            </OverlayTrigger>
+          </div>
+        );
+      },
+    },
+  ];
+
+  return (
+    <>
+      <h2>Usuarios</h2>
+      <p>Usuarios registrados en el sistema.</p>
+      {data && <DataTable columns={columns} data={data.data} footer={false} />}
+    </>
+  );
+}

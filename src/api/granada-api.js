@@ -23,9 +23,9 @@ config.interceptors.response.use(null, (error) => {
   // B. Errores esperados
   // 1. Solicitudes no autenticadas (redireccionar a login)
   if (error.response?.status === 401) {
-    localStorage.removeItem('sessionInfo');
+    // localStorage.removeItem('sessionInfo');
     // Llevar a página que indica que sesión caducó?
-    window.location.replace('/login');
+    // window.location.replace('/login');
   }
   // 2. Solicitudes no autorizadas (redireccionar a inicio)
   if (error.response?.status === 403) {

@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
         const sessionInfo = data.headers['session-info'];
         setAuth(sessionInfo);
         toast.success('Sesión iniciada!');
-        // navigate(from);
+        navigate(from);
       },
     });
   };

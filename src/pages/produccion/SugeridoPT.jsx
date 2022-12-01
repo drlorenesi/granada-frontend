@@ -72,8 +72,8 @@ export default function PorCanal() {
     // error,
   } = useGetSugeridoPT(
     false,
-    getValues('produccion'),
     getValues('stock'),
+    getValues('produccion'),
     encodeURIComponent(getValues('bodegas'))
   );
 

@@ -10,7 +10,7 @@ import SelectField from '../../components/formInputs/SelectField';
 import CheckboxGroupField from '../../components/formInputs/CheckboxGroupField';
 import Submit from '../../components/formInputs/Submit';
 // Queries
-import { useGetSugeridoPT } from '../../queries/useProduccion';
+import { useGetSugeridoMA } from '../../queries/useProduccion';
 // Data Table
 // import DataTable from '../../components/DataTable';
 // Utils
@@ -52,16 +52,17 @@ export default function PorCanal() {
       .typeError('Por favor seleccionar una opción.')
       .required('Campo obligatorio')
       .nullable(),
-    entrega: yup
-      .number()
-      .typeError('Por favor seleccionar una opción.')
-      .required('Campo obligatorio')
-      .nullable(),
     stock: yup
       .number()
       .typeError('Por favor seleccionar una opción.')
       .required('Campo obligatorio')
       .nullable(),
+    entrega: yup
+      .number()
+      .typeError('Por favor seleccionar una opción.')
+      .required('Campo obligatorio')
+      .nullable(),
+    bodegas: yup.array().of(yup.number()),
   });
 
   const {
@@ -83,10 +84,11 @@ export default function PorCanal() {
     // dataUpdatedAt,
     // isError,
     // error,
-  } = useGetSugeridoPT(
+  } = useGetSugeridoMA(
     false,
-    getValues('entrega'),
+    getValues('tipo'),
     getValues('stock'),
+    getValues('entrega'),
     encodeURIComponent(getValues('bodegas'))
   );
   console.log(data);
@@ -95,7 +97,6 @@ export default function PorCanal() {
   // ----------
 
   const onSubmit = async (data) => {
-    console.log(data);
     refetch();
   };
 

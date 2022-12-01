@@ -55,9 +55,9 @@ export default function Login() {
   };
 
   // If the user is logged in, redirect to home
-  if (auth) {
-    return <Navigate to='/' replace />;
-  }
+  // if (auth) {
+  //   return <Navigate to='/' replace />;
+  // }
 
   return (
     <>

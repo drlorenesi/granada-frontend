@@ -77,7 +77,7 @@ export default function Navigation() {
                       to='ventas/categoria'
                       onClick={menuOpen ? toggleMenu : null}
                     >
-                      Por Categría
+                      Por Categoría
                     </NavDropdown.Item>
                   </NavDropdown>
                   {/* Producción */}

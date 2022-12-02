@@ -25,6 +25,7 @@ export default function Input({ control, name, message, ...props }) {
             calendarStartDay={0}
             isClearable
             // showWeekNumbers
+            inputmode='none'
             {...props}
           />
           <div className='text-danger'>

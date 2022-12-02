@@ -25,7 +25,7 @@ export default function Input({ control, name, message, ...props }) {
             calendarStartDay={0}
             isClearable
             // showWeekNumbers
-            readonly='readonly'
+            onFocus={(e) => e.target.blur()}
             {...props}
           />
           <div className='text-danger'>

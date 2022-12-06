@@ -12,15 +12,16 @@ import Submit from '../../components/formInputs/Submit';
 // Queries
 import { useGetSugeridoMA } from '../../queries/useProduccion';
 // Data Table
-// import DataTable from '../../components/DataTable';
+import DataTable from '../../components/DataTable';
 // Utils
+import { formatDec } from '../../utils/formatUtils';
 
 export default function PorCanal() {
   const tipoOptions = [
     { key: 'Materia Prima', value: '1' },
-    { key: 'Producto Intermedio', value: '2' },
-    { key: 'Material de Empaque', value: '3' },
-    { key: 'Útiles de Limpieza', value: '4' },
+    { key: 'Producto Intermedio', value: '4' },
+    { key: 'Material de Empaque', value: '2' },
+    { key: 'Útiles de Limpieza', value: '3' },
   ];
 
   const dropDownOptions = [
@@ -91,10 +92,122 @@ export default function PorCanal() {
     getValues('entrega'),
     encodeURIComponent(getValues('bodegas'))
   );
-  console.log(data);
 
   // Data Table
   // ----------
+  const columns = [
+    { Header: 'Código', accessor: 'codigo' },
+    // { Header: 'Código Alt', accessor: 'codigo_alt' },
+    { Header: 'Descripción', accessor: 'descripcion' },
+    { Header: 'Unidad', accessor: 'unidad' },
+    {
+      Header: 'Costo PP',
+      accessor: 'costo_pp',
+      Cell: (props) => {
+        return (
+          <div style={{ textAlign: 'right' }}>
+            {formatDec(props.row.original.costo_pp)}
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Salidas P4',
+      accessor: 'salidas_p4',
+      Cell: (props) => {
+        return (
+          <div style={{ textAlign: 'right' }}>
+            {formatDec(props.row.original.salidas_p4)}
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Salidas P2',
+      accessor: 'salidas_p2',
+      Cell: (props) => {
+        return (
+          <div style={{ textAlign: 'right' }}>
+            {formatDec(props.row.original.salidas_p2)}
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Disponible',
+      accessor: 'disponible',
+      Cell: (props) => {
+        return (
+          <div style={{ textAlign: 'right', fontWeight: 'bold' }}>
+            {formatDec(props.row.original.disponible)}
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Stock',
+      accessor: 't_stock',
+      Cell: (props) => {
+        return (
+          <div style={{ textAlign: 'right' }}>
+            {formatDec(props.row.original.t_stock)}
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Entrega',
+      accessor: 't_entrega',
+      Cell: (props) => {
+        return (
+          <div style={{ textAlign: 'right' }}>
+            {formatDec(props.row.original.t_entrega)}
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Sugerido 4',
+      accessor: 'sugerido_4',
+      Cell: (props) => {
+        return (
+          <div style={{ textAlign: 'right' }}>
+            {formatDec(props.row.original.sugerido_4)}
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Sugerido 2',
+      accessor: 'sugerido_2',
+      Cell: (props) => {
+        return (
+          <div style={{ textAlign: 'right' }}>
+            {formatDec(props.row.original.sugerido_2)}
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Orden',
+      accessor: 'orden',
+      Cell: (props) => {
+        let display = 'black';
+        if (props.row.original.orden < 0) {
+          display = 'red';
+        } else {
+          display = 'green';
+        }
+        return (
+          <div
+            style={{ textAlign: 'right', fontWeight: 'bold', color: display }}
+          >
+            {formatDec(props.row.original.orden)}
+          </div>
+        );
+      },
+    },
+  ];
 
   const onSubmit = async (data) => {
     refetch();
@@ -184,9 +297,9 @@ export default function PorCanal() {
       <br />
       <Row>
         <Col>
-          {/* {data && (
+          {data && (
             <DataTable columns={columns} data={data.data.rows} footer={true} />
-          )} */}
+          )}
         </Col>
       </Row>
     </>

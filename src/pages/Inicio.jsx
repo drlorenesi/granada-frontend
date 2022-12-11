@@ -26,7 +26,7 @@ export default function Inicio() {
   }
 
   if (isError) {
-    return <ErrorMessage error={error.message} />;
+    return <ErrorMessage error={error} />;
   }
   return (
     <>

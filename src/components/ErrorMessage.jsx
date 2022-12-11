@@ -1,6 +1,6 @@
 import Alert from 'react-bootstrap/Alert';
 
-export default function ErrorMessage({ message }) {
+export default function ErrorMessage({ error }) {
   return (
     <div
       style={{
@@ -13,7 +13,7 @@ export default function ErrorMessage({ message }) {
       <Alert variant='danger'>
         <Alert.Heading>The following error ocurred:</Alert.Heading>
         <ul>
-          <li>{message}</li>
+          <li>{error.message}</li>
         </ul>
       </Alert>
     </div>

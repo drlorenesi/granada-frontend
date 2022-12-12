@@ -25,12 +25,25 @@ import PorCategoria from './pages/ventas/PorCategoria';
 // Producción
 import SugeridoPT from './pages/produccion/SugeridoPT';
 import SugeridoMA from './pages/produccion/SugeridoMA';
+// Maestros
+import Productos from './pages/maestros/Productos';
 // Usuario
 import Perfil from './pages/usuario/Perfil';
 import Pass from './pages/usuario/Pass';
 // Admin
 import Usuarios from './pages/admin/Usuarios';
 import Sesiones from './pages/admin/Sesiones';
+
+// const roles = [
+//   { nivel: 1, descripcion: 'Administrador' },
+//   { nivel: 2, descripcion: 'Gerencia' },
+//   { nivel: 3, descripcion: 'Ventas' },
+//   { nivel: 4, descripcion: 'Producción' },
+//   { nivel: 5, descripcion: 'Contabilidad' },
+//   { nivel: 6, descripcion: 'Recursos Humanos' },
+//   { nivel: 7, descripcion: 'Inventarios' },
+//   { nivel: 10, descripcion: 'General' },
+// ];
 
 export default function App() {
   return (
@@ -46,7 +59,7 @@ export default function App() {
       {/* Logged in Routes */}
       <Route path='/' element={<Layout />}>
         {/* Generales */}
-        <Route element={<ProtectedOutlet roles={[1, 2, 3]} />}>
+        <Route element={<ProtectedOutlet roles={[1, 2, 3, 10]} />}>
           <Route index element={<Inicio />} />
           <Route path='info' element={<Info />} />
           <Route path='perfil' element={<Perfil />} />
@@ -63,6 +76,10 @@ export default function App() {
         <Route element={<ProtectedOutlet roles={[1, 2, 3]} />}>
           <Route path='produccion/sugerido-pt' element={<SugeridoPT />} />
           <Route path='produccion/sugerido-ma' element={<SugeridoMA />} />
+        </Route>
+        {/* Maestros */}
+        <Route element={<ProtectedOutlet roles={[1]} />}>
+          <Route path='maestros/productos' element={<Productos />} />
         </Route>
         {/* Admin */}
         <Route element={<ProtectedOutlet roles={[1]} />}>

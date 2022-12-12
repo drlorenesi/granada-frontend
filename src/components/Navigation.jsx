@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FaHome, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 // Bootstrap
 import Container from 'react-bootstrap/Container';
@@ -7,6 +7,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+// Components
+import ProtectedNav from './ProtectedNav';
 // Auth Hook
 import { useAuth } from '../context/AuthContext';
 
@@ -56,102 +58,127 @@ export default function Navigation() {
                   {/* Ventas */}
                   <NavDropdown title='Ventas'>
                     {/* Por Canal */}
-                    <NavDropdown.Item
-                      as={NavLink}
+                    <ProtectedNav
+                      type='dropdown'
+                      name='Por Canal'
                       to='ventas/canal'
-                      onClick={menuOpen ? toggleMenu : null}
-                    >
-                      Por Canal
-                    </NavDropdown.Item>
+                      menuOpen={menuOpen}
+                      toggleMenu={toggleMenu}
+                      roles={[1, 2, 3]}
+                    />
                     {/* Por Producto */}
-                    <NavDropdown.Item
-                      as={NavLink}
+                    <ProtectedNav
+                      type='dropdown'
+                      name='Por Producto'
                       to='ventas/producto'
-                      onClick={menuOpen ? toggleMenu : null}
-                    >
-                      Por Producto
-                    </NavDropdown.Item>
+                      menuOpen={menuOpen}
+                      toggleMenu={toggleMenu}
+                      roles={[1, 2, 3]}
+                    />
                     {/* Por Categría */}
-                    <NavDropdown.Item
-                      as={NavLink}
+                    <ProtectedNav
+                      type='dropdown'
+                      name='Por Categoría'
                       to='ventas/categoria'
-                      onClick={menuOpen ? toggleMenu : null}
-                    >
-                      Por Categoría
-                    </NavDropdown.Item>
+                      menuOpen={menuOpen}
+                      toggleMenu={toggleMenu}
+                      roles={[1, 2, 3]}
+                    />
                   </NavDropdown>
                   {/* Producción */}
                   <NavDropdown title='Producción'>
                     {/* Sugerido PT*/}
-                    <NavDropdown.Item
-                      as={NavLink}
+                    <ProtectedNav
+                      type='dropdown'
+                      name='Orden Sugerida - PT'
                       to='produccion/sugerido-pt'
-                      onClick={menuOpen ? toggleMenu : null}
-                    >
-                      Orden Sugerida - PT
-                    </NavDropdown.Item>
+                      menuOpen={menuOpen}
+                      toggleMenu={toggleMenu}
+                      roles={[1, 2, 3]}
+                    />
                     {/* Sugerido Materiales */}
-                    <NavDropdown.Item
-                      as={NavLink}
+                    <ProtectedNav
+                      type='dropdown'
+                      name='Orden Sugerida - Materiales'
                       to='produccion/sugerido-ma'
-                      onClick={menuOpen ? toggleMenu : null}
-                    >
-                      Orden Sugerida - Materiales
-                    </NavDropdown.Item>
+                      menuOpen={menuOpen}
+                      toggleMenu={toggleMenu}
+                      roles={[1, 2, 3]}
+                    />
+                  </NavDropdown>
+                  {/* Maestros */}
+                  <NavDropdown title='Maestros'>
+                    {/* Productos */}
+                    <ProtectedNav
+                      type='dropdown'
+                      name='Productos'
+                      to='maestros/productos'
+                      menuOpen={menuOpen}
+                      toggleMenu={toggleMenu}
+                      roles={[1]}
+                    />
                   </NavDropdown>
                   {/* Posts */}
-                  <Nav.Link
-                    as={NavLink}
+                  <ProtectedNav
+                    name='Posts'
                     to='posts'
-                    onClick={menuOpen ? toggleMenu : null}
-                  >
-                    Posts
-                  </Nav.Link>
+                    menuOpen={menuOpen}
+                    toggleMenu={toggleMenu}
+                    roles={[1]}
+                  />
                 </Nav>
               </Nav>
               {/* Right side Nav */}
               {/* ------------- */}
               <Nav>
-                <Nav.Link
-                  as={NavLink}
+                <ProtectedNav
+                  name='Info'
                   to='info'
-                  onClick={menuOpen ? toggleMenu : null}
-                >
-                  Info
-                </Nav.Link>
-                {/* Dropdown Admin */}
+                  menuOpen={menuOpen}
+                  toggleMenu={toggleMenu}
+                  roles={[1, 2, 3]}
+                />
+                {/* Admin */}
                 <NavDropdown align='end' title='Admin'>
-                  <NavDropdown.Item
-                    as={NavLink}
+                  {/* Usuarios */}
+                  <ProtectedNav
+                    type='dropdown'
+                    name='Usuarios'
                     to='admin/usuarios'
-                    onClick={menuOpen ? toggleMenu : null}
-                  >
-                    Usuarios
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={NavLink}
+                    menuOpen={menuOpen}
+                    toggleMenu={toggleMenu}
+                    roles={[1]}
+                  />
+                  {/* Sesiones */}
+                  <ProtectedNav
+                    type='dropdown'
+                    name='Sesiones'
                     to='admin/sesiones'
-                    onClick={menuOpen ? toggleMenu : null}
-                  >
-                    Sesiones
-                  </NavDropdown.Item>
+                    menuOpen={menuOpen}
+                    toggleMenu={toggleMenu}
+                    roles={[1]}
+                  />
                 </NavDropdown>
-                {/* Dropdown Usuario */}
+                {/* Perfil */}
                 <NavDropdown align='end' title={<FaUserCircle size={21} />}>
-                  <NavDropdown.Item
-                    as={NavLink}
+                  {/* Mi Perfil */}
+                  <ProtectedNav
+                    type='dropdown'
+                    name='Mi Perfil'
                     to='perfil'
-                    onClick={menuOpen ? toggleMenu : null}
-                  >
-                    Mi Perfil
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={NavLink}
+                    menuOpen={menuOpen}
+                    toggleMenu={toggleMenu}
+                    roles={[1, 2, 3, 10]}
+                  />
+                  {/* Cambiar Contraseña */}
+                  <ProtectedNav
+                    type='dropdown'
+                    name='Cambiar Contraseña'
                     to='pass'
-                    onClick={menuOpen ? toggleMenu : null}
-                  >
-                    Cambiar Contraseña
-                  </NavDropdown.Item>
+                    menuOpen={menuOpen}
+                    toggleMenu={toggleMenu}
+                    roles={[1, 2, 3, 10]}
+                  />
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={handleLogout}>
                     <span className='d-flex'>

@@ -15,14 +15,16 @@ import Loader from '../../components/Loader';
 import ErrorMessage from '../../components/ErrorMessage';
 // Queries
 import { useGetRoles } from '../../queries/useRoles';
-import { useGetPerfil } from '../../queries/usePerfil';
+import { useGetPerfil, usePutPerfil } from '../../queries/usePerfil';
 
 export default function Perfil() {
+  // Fetch dropdown menu options first
   const { isLoading: isLoadingRoles, data: roles } = useGetRoles();
   const selectOptions = roles?.data.map((role) => {
     return { key: role.descripcion, value: role.nivel };
   });
 
+  // Fetch main values after dropdown options
   const {
     isLoading: isLoadingPerfil,
     isError,
@@ -69,7 +71,9 @@ export default function Perfil() {
     resolver: yupResolver(validationSchema),
   });
 
-  // effect runs when data updated
+  const { mutateAsync: updatePerfil } = usePutPerfil();
+
+  // effect runs when data has been fetched
   useEffect(() => {
     // reset form with user data
     reset({
@@ -82,12 +86,7 @@ export default function Perfil() {
   }, [reset, data]);
 
   const onSubmit = async (data) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-        console.log(JSON.stringify(data, null, 2));
-      }, 500);
-    });
+    await updatePerfil(data);
   };
 
   if (isLoadingRoles || isLoadingPerfil) {

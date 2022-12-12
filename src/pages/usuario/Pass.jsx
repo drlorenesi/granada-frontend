@@ -9,6 +9,8 @@ import Col from 'react-bootstrap/Col';
 // Form Inputs
 import InputField from '../../components/formInputs/InputField';
 import Submit from '../../components/formInputs/Submit';
+// Queries
+import { usePostPass } from '../../queries/usePerfil';
 
 export default function Pass() {
   const defaultValues = {
@@ -40,6 +42,8 @@ export default function Pass() {
     resolver: yupResolver(validationSchema),
   });
 
+  const { mutateAsync: updatePass } = usePostPass();
+
   // Clear form after a successfull submit
   useEffect(() => {
     reset({
@@ -50,12 +54,7 @@ export default function Pass() {
   }, [reset, isSubmitSuccessful]);
 
   const onSubmit = async (data) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-        console.log(JSON.stringify(data, null, 2));
-      }, 500);
-    });
+    await updatePass(data);
   };
 
   return (

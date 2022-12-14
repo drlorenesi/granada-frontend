@@ -14,3 +14,16 @@ export const useGetProductos = (enabled = true, tipo, estatus) => {
     }
   );
 };
+
+// 2. Get Producto
+export const useGetProducto = (id) => {
+  return useQuery(
+    ['producto', id],
+    () => api.get(`/maestros/productos/${id}`),
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
+};

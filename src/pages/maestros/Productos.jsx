@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -75,7 +76,22 @@ export default function PorCanal() {
   // Data Table
   // ----------
   const columns = [
-    { Header: 'Código', accessor: 'codigo' },
+    {
+      Header: 'Código',
+      accessor: 'codigo',
+      Cell: ({ row }) => {
+        return (
+          <Link
+            to={`/maestros/productos/${row.original.codigo}`}
+            // target='_blank'
+            // rel='noreferrer'
+            style={{ textDecoration: 'none' }}
+          >
+            {row.original.codigo}
+          </Link>
+        );
+      },
+    },
     { Header: 'Código Alt', accessor: 'codigo_alt' },
     { Header: 'Descripción', accessor: 'descripcion' },
     {

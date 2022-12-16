@@ -11,12 +11,16 @@ export const useGetUsuarios = () => {
 };
 
 // X. Obtener Usuario
-export const useGetUsuario = (id) => {
+export const useGetUsuario = (enabled = true, id, onError = null) => {
   return useQuery(['usuario', id], () => api.get(`/admin/usuarios/${id}`), {
+    enabled,
     refetchOnWindowFocus: false,
     retry: false,
+    onError,
   });
 };
+
+// X. Actualziar Usuario
 
 // X. Suspender Usuario
 export const useSuspender = () => {

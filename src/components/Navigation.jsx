@@ -1,6 +1,13 @@
+import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import {
+  FaHome,
+  FaCandyCane,
+  FaSignOutAlt,
+  FaUserCog,
+  FaEdit,
+} from 'react-icons/fa';
 // Bootstrap
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
@@ -160,33 +167,26 @@ export default function Navigation() {
                   />
                 </NavDropdown>
                 {/* Perfil */}
-                <NavDropdown align='end' title={<FaUserCircle size={21} />}>
+                <NavDropdown align='end' title={<FaCandyCane size={21} />}>
                   {/* Mi Perfil */}
-                  <ProtectedNav
-                    type='dropdown'
-                    name='Mi Perfil'
+                  <NavDropdown.Item
+                    as={NavLink}
                     to='perfil'
-                    menuOpen={menuOpen}
-                    toggleMenu={toggleMenu}
-                    roles={[1, 2, 3, 10]}
-                  />
+                    onClick={menuOpen ? toggleMenu : null}
+                  >
+                    <FaUserCog /> &nbsp;Mi Perfil
+                  </NavDropdown.Item>
                   {/* Cambiar Contraseña */}
-                  <ProtectedNav
-                    type='dropdown'
-                    name='Cambiar Contraseña'
+                  <NavDropdown.Item
+                    as={NavLink}
                     to='pass'
-                    menuOpen={menuOpen}
-                    toggleMenu={toggleMenu}
-                    roles={[1, 2, 3, 10]}
-                  />
+                    onClick={menuOpen ? toggleMenu : null}
+                  >
+                    <FaEdit /> &nbsp;Cambiar Contraseña
+                  </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={handleLogout}>
-                    <span className='d-flex'>
-                      <div className='me-auto'>Cerrar Sesión</div>
-                      <div>
-                        <FaSignOutAlt />
-                      </div>
-                    </span>
+                    <FaSignOutAlt /> &nbsp;Cerrar Sesión
                   </NavDropdown.Item>
                 </NavDropdown>
               </Nav>

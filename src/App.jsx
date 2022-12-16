@@ -33,6 +33,7 @@ import Perfil from './pages/usuario/Perfil';
 import Pass from './pages/usuario/Pass';
 // Admin
 import Usuarios from './pages/admin/Usuarios';
+import Usuario from './pages/admin/Usuario';
 import Sesiones from './pages/admin/Sesiones';
 
 // const roles = [
@@ -86,6 +87,7 @@ export default function App() {
         {/* Admin */}
         <Route element={<ProtectedOutlet roles={[1]} />}>
           <Route path='admin/usuarios' element={<Usuarios />} />
+          <Route path='admin/usuarios/:id' element={<Usuario />} />
           <Route path='admin/sesiones' element={<Sesiones />} />
         </Route>
       </Route>

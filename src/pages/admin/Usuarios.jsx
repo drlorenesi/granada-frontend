@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { FaEdit, FaCheckCircle, FaStopCircle } from 'react-icons/fa';
 // Bootstrap
 import Button from 'react-bootstrap/Button';
@@ -18,6 +19,7 @@ import {
 import { formatDateMed } from '../../utils/formatUtils';
 
 export default function Usuarios() {
+  let navigate = useNavigate();
   const { isLoading, isError, error, data } = useGetUsuarios();
   const { mutateAsync: suspender } = useSuspender();
   const { mutateAsync: restablecer } = useRestablecer();
@@ -31,7 +33,7 @@ export default function Usuarios() {
   }
 
   const handleEdit = (id) => {
-    console.log(id);
+    navigate(`/admin/usuarios/${id}`);
   };
 
   const handleSuspend = async (id) => {
@@ -45,24 +47,30 @@ export default function Usuarios() {
   // Data Table
   // ----------
   const columns = [
-    { Header: 'Nombre', accessor: 'nombre' },
-    { Header: 'Apellido', accessor: 'apellido' },
+    {
+      Header: 'Nombre',
+      accessor: 'nombre',
+      Cell: ({ row }) => {
+        return (
+          <span>
+            {row.original.nombre} {row.original.apellido}
+          </span>
+        );
+      },
+    },
     { Header: 'Ext.', accessor: 'extension' },
     { Header: 'Email', accessor: 'email' },
     { Header: 'Role', accessor: 'role.descripcion' },
     {
       Header: 'Verificado',
-      accessor: 'verificado',
       Cell: ({ row }) => (row.original.verificado ? 'Sí' : 'Pendiente'),
     },
     {
       Header: 'Ingreso Actual',
-      accessor: 'ingresoActual',
       Cell: ({ row }) => formatDateMed(new Date(row.original.ingresoActual)),
     },
     {
       Header: 'Estatus',
-      accessor: 'suspendido',
       Cell: ({ row }) => {
         return row.original.suspendido ? (
           <span style={{ color: 'red' }}>Suspendido</span>
@@ -73,7 +81,6 @@ export default function Usuarios() {
     },
     {
       Header: 'Acciones',
-      accessor: 'none',
       Cell: (props) => {
         return (
           <div className='text-nowrap' style={{ textAlign: 'center' }}>

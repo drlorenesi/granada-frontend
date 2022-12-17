@@ -17,7 +17,7 @@ import Loader from '../../components/Loader';
 import ErrorMessage from '../../components/ErrorMessage';
 // Queries
 import { useGetRoles } from '../../queries/useRoles';
-import { useGetUsuario } from '../../queries/useAdmin';
+import { useGetUsuario, usePutUsuario } from '../../queries/useAdmin';
 
 export default function Usuario() {
   let { id } = useParams();
@@ -93,8 +93,10 @@ export default function Usuario() {
     });
   }, [reset, data]);
 
+  const { mutateAsync: actualizar } = usePutUsuario();
+
   const onSubmit = async (data) => {
-    console.log(data);
+    await actualizar({ id, data });
   };
 
   if (isLoadingRoles || isLoadingUsuario) {
@@ -140,15 +142,17 @@ export default function Usuario() {
                 options={selectOptions}
               />
             </Form.Group>
+
             <Submit
               name='Actualizar'
               isSubmitting={isSubmitting}
               error={Object.keys(errors).length > 0}
             />
           </Form>
+          <hr />
         </Col>
       </Row>
-      <br />
+      {/* <br /> */}
       <Link to='/admin/usuarios'>
         <Button variant='outline-primary'>&laquo; Regresar</Button>
       </Link>

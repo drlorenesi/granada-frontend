@@ -21,6 +21,19 @@ export const useGetUsuario = (enabled = true, id, onError = null) => {
 };
 
 // X. Actualziar Usuario
+export const usePutUsuario = () => {
+  const queryClient = useQueryClient();
+  return useMutation(({ id, data }) => api.put(`/admin/usuarios/${id}`, data), {
+    // Tradicional
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['usuario', `${data.data._id}`]);
+      toast.success('Usuario actualizado.');
+    },
+    onError: (error) => {
+      toast.error('No fue posible actualizar al usuario.');
+    },
+  });
+};
 
 // X. Suspender Usuario
 export const useSuspender = () => {

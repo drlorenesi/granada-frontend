@@ -26,6 +26,9 @@ export default function Input({ control, name, message, ...props }) {
             isClearable
             // showWeekNumbers
             onFocus={(e) => e.target.blur()}
+            showYearDropdown
+            yearDropdownItemNumber={7}
+            scrollableYearDropdown
             {...props}
           />
           <div className='text-danger'>

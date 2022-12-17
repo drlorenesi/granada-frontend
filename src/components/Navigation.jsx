@@ -167,7 +167,10 @@ export default function Navigation() {
                   />
                 </NavDropdown>
                 {/* Perfil */}
-                <NavDropdown align='end' title={<FaCandyCane size={21} />}>
+                <NavDropdown
+                  align='end'
+                  title={<FaCandyCane size={22} style={{ color: 'crimson' }} />}
+                >
                   {/* Mi Perfil */}
                   <NavDropdown.Item
                     as={NavLink}

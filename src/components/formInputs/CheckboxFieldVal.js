@@ -1,7 +1,14 @@
 import { Controller } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 
-export default function CheckboxField({ control, name, label, message }) {
+export default function CheckboxFieldVal({
+  control,
+  name,
+  label,
+  values,
+  message,
+  ...props
+}) {
   return (
     <Controller
       control={control}
@@ -11,9 +18,17 @@ export default function CheckboxField({ control, name, label, message }) {
           <Form.Check
             type='checkbox'
             label={label}
-            value='true'
+            value={field.value}
+            checked={field.value === values.checked}
             isInvalid={fieldState.error}
-            {...field}
+            onChange={(e) => {
+              if (e.target.checked) {
+                field.onChange(values.checked, field.value);
+              } else {
+                field.onChange(values.unChecked, field.value);
+              }
+            }}
+            {...props}
           />
           <div className='text-danger'>
             <small>{fieldState?.error?.message}</small>

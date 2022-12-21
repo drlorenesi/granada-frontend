@@ -37,7 +37,8 @@ export default function Inicio() {
             Hoy es {formatDate(new Date())}. Tu último ingreso fue el{' '}
             {formatDateLong(new Date(data.data.ultimoIngreso))}
           </p>
-          <div className='d-flex justify-content-center'>
+          <div className='d-flex justify-content-left'>
+            &nbsp;&nbsp;&nbsp;
             <Calendar
               onChange={onChange}
               value={value}

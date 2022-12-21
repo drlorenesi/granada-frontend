@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import api from '../api/granada-api';
 
-// X. Obtener Usuarios
+// 1. Obtener Usuarios
 export const useGetUsuarios = () => {
   return useQuery('usuarios', () => api.get('/admin/usuarios'), {
     refetchOnWindowFocus: false,
@@ -10,7 +10,7 @@ export const useGetUsuarios = () => {
   });
 };
 
-// X. Obtener Usuario
+// 2. Obtener Usuario
 export const useGetUsuario = (enabled = true, id, onError = null) => {
   return useQuery(['usuario', id], () => api.get(`/admin/usuarios/${id}`), {
     enabled,
@@ -20,7 +20,7 @@ export const useGetUsuario = (enabled = true, id, onError = null) => {
   });
 };
 
-// X. Actualziar Usuario
+// 3. Actualziar Usuario
 export const usePutUsuario = () => {
   const queryClient = useQueryClient();
   return useMutation(({ id, data }) => api.put(`/admin/usuarios/${id}`, data), {
@@ -35,7 +35,7 @@ export const usePutUsuario = () => {
   });
 };
 
-// X. Suspender Usuario
+// 4. Suspender Usuario
 export const useSuspender = () => {
   const queryClient = useQueryClient();
   return useMutation((id) => api.post(`/admin/suspender/${id}`), {
@@ -50,7 +50,7 @@ export const useSuspender = () => {
   });
 };
 
-// X. Restablecer Usuario
+// 5. Restablecer Usuario
 export const useRestablecer = () => {
   const queryClient = useQueryClient();
   return useMutation((id) => api.post(`/admin/restablecer/${id}`), {
@@ -65,7 +65,7 @@ export const useRestablecer = () => {
   });
 };
 
-// X. Obtener Sesiones
+// 6. Obtener Sesiones
 export const useGetSesiones = (enabled = true) => {
   return useQuery('sesiones', () => api.get('/admin/sesiones'), {
     enabled,
@@ -74,7 +74,7 @@ export const useGetSesiones = (enabled = true) => {
   });
 };
 
-// X. Eliminar Sesión
+// 7. Eliminar Sesión
 export const useEliminar = () => {
   const queryClient = useQueryClient();
   return useMutation((id) => api.delete(`/admin/sesiones/${id}`), {

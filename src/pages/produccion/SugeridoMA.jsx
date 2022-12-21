@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // Form Inputs
 import SelectField from '../../components/formInputs/SelectField';
-import CheckboxGroupField from '../../components/formInputs/CheckboxGroupField';
+import CheckboxFieldGroup from '../../components/formInputs/CheckboxFieldGroup';
 import Submit from '../../components/formInputs/Submit';
 // Queries
 import { useGetSugeridoMA } from '../../queries/useProduccion';
@@ -284,7 +284,7 @@ export default function PorCanal() {
               Bodegas:
             </Form.Label>
             <Col sm={inputSize}>
-              <CheckboxGroupField
+              <CheckboxFieldGroup
                 control={control}
                 name='bodegas'
                 options={checkboxOptions}

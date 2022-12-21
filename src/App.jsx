@@ -27,7 +27,7 @@ import SugeridoPT from './pages/produccion/SugeridoPT';
 import SugeridoMA from './pages/produccion/SugeridoMA';
 // Maestros
 import Productos from './pages/maestros/Productos';
-import ProductoDetalles from './pages/maestros/ProductoDetalles';
+import ProductoDetalle from './pages/maestros/ProductoDetalle';
 // Usuario
 import Perfil from './pages/usuario/Perfil';
 import Pass from './pages/usuario/Pass';
@@ -82,7 +82,7 @@ export default function App() {
         {/* Maestros */}
         <Route element={<ProtectedOutlet roles={[1]} />}>
           <Route path='maestros/productos' element={<Productos />} />
-          <Route path='maestros/productos/:id' element={<ProductoDetalles />} />
+          <Route path='maestros/productos/:id' element={<ProductoDetalle />} />
         </Route>
         {/* Admin */}
         <Route element={<ProtectedOutlet roles={[1]} />}>

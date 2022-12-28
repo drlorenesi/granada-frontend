@@ -50,10 +50,10 @@ export const formatDateISOLocal = (date) => {
 };
 
 // expected output: 123,456,789.00
-export const formatDec = (num) =>
+export const formatDec = (num, p = 2) =>
   new Intl.NumberFormat('es-GT', {
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 2,
+    maximumFractionDigits: p,
+    minimumFractionDigits: p,
   }).format(num);
 
 // expected output: QTZ 123,456,789.00
@@ -64,9 +64,9 @@ export const formatQ = (num) =>
   }).format(num);
 
 // expected output: 100.0%
-export const formatP = (num) =>
+export const formatP = (num, p = 1) =>
   new Intl.NumberFormat('en-US', {
     style: 'percent',
-    maximumFractionDigits: 1,
-    minimumFractionDigits: 1,
+    maximumFractionDigits: p,
+    minimumFractionDigits: p,
   }).format(num);

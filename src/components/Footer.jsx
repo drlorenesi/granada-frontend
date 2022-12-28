@@ -17,7 +17,7 @@ export default function Footer() {
         <FaGithub />
       </a>{' '}
       <span className='text-muted'>
-        <small>v0.1.1b</small>
+        <small>v0.1.2</small>
       </span>
     </Container>
   );

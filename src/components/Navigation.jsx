@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FaHome,
-  FaCandyCane,
+  FaSnowflake,
   FaSignOutAlt,
   FaUserCog,
   FaEdit,
@@ -121,6 +121,15 @@ export default function Navigation() {
                       toggleMenu={toggleMenu}
                       roles={[1, 2, 3]}
                     />
+                    {/* Unidades Producidas Mensuales */}
+                    <ProtectedNav
+                      type='dropdown'
+                      name='Unidades Producidas Mensuales'
+                      to='produccion/unidades-mensuales'
+                      menuOpen={menuOpen}
+                      toggleMenu={toggleMenu}
+                      roles={[1, 2, 3]}
+                    />
                   </NavDropdown>
                   {/* Maestros */}
                   <NavDropdown title='Maestros'>
@@ -178,7 +187,9 @@ export default function Navigation() {
                 {/* Perfil */}
                 <NavDropdown
                   align='end'
-                  title={<FaCandyCane size={22} style={{ color: 'crimson' }} />}
+                  title={
+                    <FaSnowflake size={22} style={{ color: 'steelblue' }} />
+                  }
                 >
                   {/* Mi Perfil */}
                   <NavDropdown.Item

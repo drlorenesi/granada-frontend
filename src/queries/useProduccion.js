@@ -2,23 +2,20 @@ import { useQuery } from 'react-query';
 import api from '../api/granada-api';
 
 // 1. Get Sugerido PT
-const getSugeridoPT = (stock, produccion, bodegas) => {
-  return api.get(
-    `/reportes/produccion/sugerido-pt?stock=${stock}&produccion=${produccion}&bodegas=${bodegas}`
-  );
-};
-
 export const useGetSugeridoPT = (
   enabled = true,
-  produccion,
   stock,
+  produccion,
   bodegas,
   onSuccess = null,
   onError = null
 ) => {
   return useQuery(
     'sugeridoPT',
-    () => getSugeridoPT(produccion, stock, bodegas),
+    () =>
+      api.get(
+        `/reportes/produccion/sugerido-pt?stock=${stock}&produccion=${produccion}&bodegas=${bodegas}`
+      ),
     {
       enabled,
       refetchOnMount: false,
@@ -31,12 +28,6 @@ export const useGetSugeridoPT = (
 };
 
 // 2. Get Sugerido MA
-const getSugeridoMA = (tipo, stock, entrega, bodegas) => {
-  return api.get(
-    `/reportes/produccion/sugerido-ma?tipo=${tipo}&stock=${stock}&entrega=${entrega}&bodegas=${bodegas}`
-  );
-};
-
 export const useGetSugeridoMA = (
   enabled = true,
   tipo,
@@ -48,7 +39,35 @@ export const useGetSugeridoMA = (
 ) => {
   return useQuery(
     'sugeridoMA',
-    () => getSugeridoMA(tipo, stock, entrega, bodegas),
+    () =>
+      api.get(
+        `/reportes/produccion/sugerido-ma?tipo=${tipo}&stock=${stock}&entrega=${entrega}&bodegas=${bodegas}`
+      ),
+    {
+      enabled,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      onSuccess,
+      onError,
+      retry: false,
+    }
+  );
+};
+
+// 3. Get Unidades Producidas Mensuales
+export const useGetProduccionPorUnidades = (
+  enabled = true,
+  fechaIni,
+  fechaFin,
+  onSuccess = null,
+  onError = null
+) => {
+  return useQuery(
+    'produccionUnidades',
+    () =>
+      api.get(
+        `/reportes/produccion/unidades-mensuales?fechaIni=${fechaIni}&fechaFin=${fechaFin}`
+      ),
     {
       enabled,
       refetchOnMount: false,

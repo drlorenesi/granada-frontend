@@ -26,6 +26,7 @@ import PorUnidadesMensuales from './pages/ventas/PorUnidadesMensuales';
 // Producción
 import SugeridoPT from './pages/produccion/SugeridoPT';
 import SugeridoMA from './pages/produccion/SugeridoMA';
+import UnidadesMensuales from './pages/produccion/UnidadesMensuales';
 // Maestros
 import Productos from './pages/maestros/Productos';
 import ProductoDetalle from './pages/maestros/ProductoDetalle';
@@ -83,6 +84,10 @@ export default function App() {
         <Route element={<ProtectedOutlet roles={[1, 2, 3]} />}>
           <Route path='produccion/sugerido-pt' element={<SugeridoPT />} />
           <Route path='produccion/sugerido-ma' element={<SugeridoMA />} />
+          <Route
+            path='produccion/unidades-mensuales'
+            element={<UnidadesMensuales />}
+          />
         </Route>
         {/* Maestros */}
         <Route element={<ProtectedOutlet roles={[1]} />}>

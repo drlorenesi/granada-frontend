@@ -57,7 +57,6 @@ export const usePutProducto = () => {
                 ? { ...oldData?.data?.rows[i], ...update }
                 : p
             );
-            console.log(newRows);
             return {
               ...oldData,
               data: {

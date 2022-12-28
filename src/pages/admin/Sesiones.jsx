@@ -27,8 +27,17 @@ export default function Sesiones() {
   // ----------
   const columns = useMemo(
     () => [
-      { Header: 'Nombre', accessor: 'usuario.nombre' },
-      { Header: 'Apellido', accessor: 'usuario.apellido' },
+      {
+        Header: 'Nombre',
+        accessor: 'usuario.nombre',
+        Cell: ({ row }) => {
+          return (
+            <span>
+              {row.original.usuario.nombre} {row.original.usuario.apellido}
+            </span>
+          );
+        },
+      },
       { Header: 'Role', accessor: 'usuario.role.descripcion' },
       { Header: 'Dispositivo', accessor: 'userAgent' },
       { Header: 'IP', accessor: 'ip' },

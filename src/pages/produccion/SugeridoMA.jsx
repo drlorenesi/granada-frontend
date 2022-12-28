@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -95,119 +96,122 @@ export default function PorCanal() {
 
   // Data Table
   // ----------
-  const columns = [
-    { Header: 'Código', accessor: 'codigo' },
-    // { Header: 'Código Alt', accessor: 'codigo_alt' },
-    { Header: 'Descripción', accessor: 'descripcion' },
-    { Header: 'Unidad', accessor: 'unidad' },
-    {
-      Header: 'Costo PP',
-      accessor: 'costo_pp',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.costo_pp)}
-          </div>
-        );
+  const columns = useMemo(
+    () => [
+      { Header: 'Código', accessor: 'codigo' },
+      // { Header: 'Código Alt', accessor: 'codigo_alt' },
+      { Header: 'Descripción', accessor: 'descripcion' },
+      { Header: 'Unidad', accessor: 'unidad' },
+      {
+        Header: 'Costo PP',
+        accessor: 'costo_pp',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.costo_pp)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Salidas P4',
-      accessor: 'salidas_p4',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.salidas_p4)}
-          </div>
-        );
+      {
+        Header: 'Salidas P4',
+        accessor: 'salidas_p4',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.salidas_p4)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Salidas P2',
-      accessor: 'salidas_p2',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.salidas_p2)}
-          </div>
-        );
+      {
+        Header: 'Salidas P2',
+        accessor: 'salidas_p2',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.salidas_p2)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Disponible',
-      accessor: 'disponible',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right', fontWeight: 'bold' }}>
-            {formatDec(props.row.original.disponible)}
-          </div>
-        );
+      {
+        Header: 'Disponible',
+        accessor: 'disponible',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right', fontWeight: 'bold' }}>
+              {formatDec(props.row.original.disponible)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Stock',
-      accessor: 't_stock',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.t_stock)}
-          </div>
-        );
+      {
+        Header: 'Stock',
+        accessor: 't_stock',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.t_stock)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Entrega',
-      accessor: 't_entrega',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.t_entrega)}
-          </div>
-        );
+      {
+        Header: 'Entrega',
+        accessor: 't_entrega',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.t_entrega)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Sugerido 4',
-      accessor: 'sugerido_4',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.sugerido_4)}
-          </div>
-        );
+      {
+        Header: 'Sugerido 4',
+        accessor: 'sugerido_4',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.sugerido_4)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Sugerido 2',
-      accessor: 'sugerido_2',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.sugerido_2)}
-          </div>
-        );
+      {
+        Header: 'Sugerido 2',
+        accessor: 'sugerido_2',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.sugerido_2)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Orden',
-      accessor: 'orden',
-      Cell: (props) => {
-        let display = 'black';
-        if (props.row.original.orden < 0) {
-          display = 'red';
-        } else {
-          display = 'green';
-        }
-        return (
-          <div
-            style={{ textAlign: 'right', fontWeight: 'bold', color: display }}
-          >
-            {formatDec(props.row.original.orden)}
-          </div>
-        );
+      {
+        Header: 'Orden',
+        accessor: 'orden',
+        Cell: (props) => {
+          let display = 'black';
+          if (props.row.original.orden < 0) {
+            display = 'red';
+          } else {
+            display = 'green';
+          }
+          return (
+            <div
+              style={{ textAlign: 'right', fontWeight: 'bold', color: display }}
+            >
+              {formatDec(props.row.original.orden)}
+            </div>
+          );
+        },
       },
-    },
-  ];
+    ],
+    []
+  );
 
   const onSubmit = async (data) => {
     refetch();

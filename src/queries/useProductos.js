@@ -24,7 +24,7 @@ export const useGetProducto = (id) => {
     ['producto', id],
     () => api.get(`/maestros/productos/${id}`),
     {
-      refetchOnMount: false,
+      // refetchOnMount: false,
       refetchOnWindowFocus: false,
       retry: false,
       onError: (error) => {
@@ -34,7 +34,7 @@ export const useGetProducto = (id) => {
         ) {
           navigate('/no-existe', { replace: true });
         } else {
-          toast.error('No fue posible actualizar al usuario.');
+          toast.error('No fue posible actualizar al producto.');
         }
       },
     }
@@ -47,13 +47,33 @@ export const usePutProducto = () => {
   return useMutation(
     ({ id, data }) => api.put(`/maestros/productos/${id}`, data),
     {
-      // Tradicional
+      // Actualizar después de 'onSuccess' (sin enviar una solicitud de red adicional)
       onSuccess: (data) => {
-        queryClient.invalidateQueries(['producto', `${data.data._id}`]);
-        toast.success('Usuario actualizado.');
+        queryClient.setQueryData('productos', (oldData) => {
+          if (oldData) {
+            let update = data?.data?.query;
+            let newRows = oldData?.data?.rows.map((p, i) =>
+              p.codigo === data?.data?.query?.codigo
+                ? { ...oldData?.data?.rows[i], ...update }
+                : p
+            );
+            console.log(newRows);
+            return {
+              ...oldData,
+              data: {
+                ...oldData.data,
+                rows: newRows,
+              },
+            };
+          } else {
+            return null;
+          }
+        });
+        queryClient.invalidateQueries(['producto', data?.data?.query?.codigo]);
+        toast.success('Producto actualizado!');
       },
       onError: (error) => {
-        toast.error('No fue posible actualizar al usuario.');
+        toast.error('No fue posible actualizar al producto.');
       },
     }
   );

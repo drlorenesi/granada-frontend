@@ -1,3 +1,4 @@
+import { useMemo, useCallback } from 'react';
 import { FaStopCircle } from 'react-icons/fa';
 // Bootstrap
 import Button from 'react-bootstrap/Button';
@@ -17,6 +18,48 @@ export default function Sesiones() {
   const { isLoading, isError, error, data } = useGetSesiones();
   const { mutateAsync: eliminar } = useEliminar();
 
+  const handleEliminar = useCallback(
+    async (id) => await eliminar(id),
+    [eliminar]
+  );
+
+  // Data Table
+  // ----------
+  const columns = useMemo(
+    () => [
+      { Header: 'Nombre', accessor: 'usuario.nombre' },
+      { Header: 'Apellido', accessor: 'usuario.apellido' },
+      { Header: 'Role', accessor: 'usuario.role.descripcion' },
+      { Header: 'Dispositivo', accessor: 'userAgent' },
+      { Header: 'IP', accessor: 'ip' },
+      {
+        Header: 'Creada',
+        accessor: 'createdAt',
+        Cell: ({ row }) => formatDateMed(new Date(row.original.createdAt)),
+      },
+      {
+        Header: 'Acciones',
+        accessor: 'none',
+        Cell: (props) => {
+          return (
+            <div className='text-nowrap' style={{ textAlign: 'center' }}>
+              <OverlayTrigger overlay={<Tooltip>Eliminar sesión</Tooltip>}>
+                <Button
+                  size='sm'
+                  variant='danger'
+                  onClick={() => handleEliminar(props.row.original._id)}
+                >
+                  <FaStopCircle />
+                </Button>
+              </OverlayTrigger>
+            </div>
+          );
+        },
+      },
+    ],
+    [handleEliminar]
+  );
+
   if (isLoading) {
     return <Loader />;
   }
@@ -24,44 +67,6 @@ export default function Sesiones() {
   if (isError) {
     return <ErrorMessage error={error.message} />;
   }
-
-  const handleEliminar = async (id) => {
-    await eliminar(id);
-  };
-
-  // Data Table
-  // ----------
-  const columns = [
-    { Header: 'Nombre', accessor: 'usuario.nombre' },
-    { Header: 'Apellido', accessor: 'usuario.apellido' },
-    { Header: 'Role', accessor: 'usuario.role.descripcion' },
-    { Header: 'Dispositivo', accessor: 'userAgent' },
-    { Header: 'IP', accessor: 'ip' },
-    {
-      Header: 'Creada',
-      accessor: 'createdAt',
-      Cell: ({ row }) => formatDateMed(new Date(row.original.createdAt)),
-    },
-    {
-      Header: 'Acciones',
-      accessor: 'none',
-      Cell: (props) => {
-        return (
-          <div className='text-nowrap' style={{ textAlign: 'center' }}>
-            <OverlayTrigger overlay={<Tooltip>Eliminar sesión</Tooltip>}>
-              <Button
-                size='sm'
-                variant='danger'
-                onClick={() => handleEliminar(props.row.original._id)}
-              >
-                <FaStopCircle />
-              </Button>
-            </OverlayTrigger>
-          </div>
-        );
-      },
-    },
-  ];
 
   return (
     <>

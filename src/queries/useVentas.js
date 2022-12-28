@@ -2,12 +2,6 @@ import { useQuery } from 'react-query';
 import api from '../api/granada-api';
 
 // 1. Get Ventas por Canal
-const getVentasPorCanal = (fechaIni, fechaFin) => {
-  return api.get(
-    `/reportes/ventas/canal?fechaIni=${fechaIni}&fechaFin=${fechaFin}`
-  );
-};
-
 export const useGetVentasPorCanal = (
   enabled = true,
   fechaIni,
@@ -15,23 +9,24 @@ export const useGetVentasPorCanal = (
   onSuccess = null,
   onError = null
 ) => {
-  return useQuery('ventasCanal', () => getVentasPorCanal(fechaIni, fechaFin), {
-    enabled,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    onSuccess,
-    onError,
-    retry: false,
-  });
-};
-
-// 2. Get Ventas por Producto
-const getVentasPorProducto = (fechaIni, fechaFin) => {
-  return api.get(
-    `/reportes/ventas/producto?fechaIni=${fechaIni}&fechaFin=${fechaFin}`
+  return useQuery(
+    'ventasCanal',
+    () =>
+      api.get(
+        `/reportes/ventas/canal?fechaIni=${fechaIni}&fechaFin=${fechaFin}`
+      ),
+    {
+      enabled,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      onSuccess,
+      onError,
+      retry: false,
+    }
   );
 };
 
+// 2. Get Ventas por Producto
 export const useGetVentasPorProducto = (
   enabled = true,
   fechaIni,
@@ -41,7 +36,10 @@ export const useGetVentasPorProducto = (
 ) => {
   return useQuery(
     'ventasProducto',
-    () => getVentasPorProducto(fechaIni, fechaFin),
+    () =>
+      api.get(
+        `/reportes/ventas/producto?fechaIni=${fechaIni}&fechaFin=${fechaFin}`
+      ),
     {
       enabled,
       refetchOnMount: false,
@@ -54,12 +52,6 @@ export const useGetVentasPorProducto = (
 };
 
 // 3. Get Ventas por Categría
-const getVentasPorCategoria = (fechaIni, fechaFin) => {
-  return api.get(
-    `/reportes/ventas/categoria?fechaIni=${fechaIni}&fechaFin=${fechaFin}`
-  );
-};
-
 export const useGetVentasPorCategoria = (
   enabled = true,
   fechaIni,
@@ -69,7 +61,35 @@ export const useGetVentasPorCategoria = (
 ) => {
   return useQuery(
     'ventasCategoria',
-    () => getVentasPorCategoria(fechaIni, fechaFin),
+    () =>
+      api.get(
+        `/reportes/ventas/categoria?fechaIni=${fechaIni}&fechaFin=${fechaFin}`
+      ),
+    {
+      enabled,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      onSuccess,
+      onError,
+      retry: false,
+    }
+  );
+};
+
+// 4. Get Ventas por Unidades Mensuales
+export const useGetVentasPorUnidades = (
+  enabled = true,
+  fechaIni,
+  fechaFin,
+  onSuccess = null,
+  onError = null
+) => {
+  return useQuery(
+    'ventasUnidades',
+    () =>
+      api.get(
+        `/reportes/ventas/unidades-mensuales?fechaIni=${fechaIni}&fechaFin=${fechaFin}`
+      ),
     {
       enabled,
       refetchOnMount: false,

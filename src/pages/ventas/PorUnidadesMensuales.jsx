@@ -2,54 +2,30 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { startOfYear } from 'date-fns';
 // Bootstrap
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // Form Inputs
-import SelectField from '../../components/formInputs/SelectField';
-import CheckboxFieldGroup from '../../components/formInputs/CheckboxFieldGroup';
+import DateField from '../../components/formInputs/DateField';
 import Submit from '../../components/formInputs/Submit';
 // Queries
-import { useGetSugeridoPT } from '../../queries/useProduccion';
+import { useGetVentasPorUnidades } from '../../queries/useVentas';
 // Data Table
 import DataTable from '../../components/DataTable';
 // Utils
-import { formatDec } from '../../utils/formatUtils';
+import { formatDateISOLocal, formatDec } from '../../utils/formatUtils';
 
-export default function PorCanal() {
-  const dropDownOptions = [
-    { key: '1 Semana', value: '0.25' },
-    { key: '2 Semanas', value: '0.50' },
-    { key: '3 Semanas', value: '0.75' },
-    { key: '4 Semanas', value: '1' },
-  ];
-
-  const checkboxOptions = [
-    { key: 'PT Central', value: '5' },
-    { key: 'PT MN', value: '11' },
-    { key: 'PT Xela', value: '14' },
-    { key: 'PT Tienda', value: '27' },
-  ];
-
+export default function PorUnidadesMensuales() {
   const defaultValues = {
-    stock: '0.50',
-    produccion: '0.25',
-    bodegas: ['5', '11', '14', '27'],
+    fechaIni: startOfYear(new Date()) || '',
+    fechaFin: new Date() || '',
   };
 
   const validationSchema = yup.object({
-    stock: yup
-      .number()
-      .typeError('Por favor seleccionar una opción.')
-      .required('Campo obligatorio')
-      .nullable(),
-    produccion: yup
-      .number()
-      .typeError('Por favor seleccionar una opción.')
-      .required('Campo obligatorio')
-      .nullable(),
-    bodegas: yup.array().of(yup.number()),
+    fechaIni: yup.date().required('Campo obligatorio').nullable(),
+    fechaFin: yup.date().required('Campo obligatorio').nullable(),
   });
 
   const {
@@ -59,7 +35,7 @@ export default function PorCanal() {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues,
-    mode: 'onSubmit',
+    mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
 
@@ -68,14 +44,12 @@ export default function PorCanal() {
     isFetching,
     refetch,
     data,
-    // dataUpdatedAt,
     // isError,
     // error,
-  } = useGetSugeridoPT(
+  } = useGetVentasPorUnidades(
     false,
-    getValues('stock'),
-    getValues('produccion'),
-    encodeURIComponent(getValues('bodegas'))
+    formatDateISOLocal(getValues('fechaIni') || null),
+    formatDateISOLocal(getValues('fechaFin') || null)
   );
 
   // Data Table
@@ -86,97 +60,133 @@ export default function PorCanal() {
       { Header: 'Código Alt', accessor: 'codigo_alt' },
       { Header: 'Descripción', accessor: 'descripcion' },
       {
-        Header: 'Ventas P4',
-        accessor: 'ventas_p4',
+        Header: 'Enero',
+        accessor: 'Enero',
         Cell: (props) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {formatDec(props.row.original.ventas_p4)}
+              {formatDec(props.row.original.Enero)}
             </div>
           );
         },
       },
       {
-        Header: 'Ventas P2',
-        accessor: 'ventas_p2',
+        Header: 'Febrero',
+        accessor: 'Febrero',
         Cell: (props) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {formatDec(props.row.original.ventas_p2)}
+              {formatDec(props.row.original.Febrero)}
             </div>
           );
         },
       },
       {
-        Header: 'Disponible',
-        accessor: 'disponible',
-        Cell: (props) => {
-          return (
-            <div style={{ textAlign: 'right', fontWeight: 'bold' }}>
-              {formatDec(props.row.original.disponible)}
-            </div>
-          );
-        },
-      },
-      {
-        Header: 'Produccion',
-        accessor: 't_produccion',
+        Header: 'Marzo',
+        accessor: 'Marzo',
         Cell: (props) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {formatDec(props.row.original.t_produccion)}
+              {formatDec(props.row.original.Marzo)}
             </div>
           );
         },
       },
       {
-        Header: 'Stock',
-        accessor: 't_stock',
+        Header: 'Abril',
+        accessor: 'Abril',
         Cell: (props) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {formatDec(props.row.original.t_stock)}
+              {formatDec(props.row.original.Abril)}
             </div>
           );
         },
       },
       {
-        Header: 'Sugerido 4',
-        accessor: 'sugerido_4',
+        Header: 'Mayo',
+        accessor: 'Mayo',
         Cell: (props) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {formatDec(props.row.original.sugerido_4)}
+              {formatDec(props.row.original.Mayo)}
             </div>
           );
         },
       },
       {
-        Header: 'Sugerido 2',
-        accessor: 'sugerido_2',
+        Header: 'Junio',
+        accessor: 'Junio',
         Cell: (props) => {
           return (
             <div style={{ textAlign: 'right' }}>
-              {formatDec(props.row.original.sugerido_2)}
+              {formatDec(props.row.original.Junio)}
             </div>
           );
         },
       },
       {
-        Header: 'Promedio',
-        accessor: 'promedio',
+        Header: 'Julio',
+        accessor: 'Julio',
         Cell: (props) => {
-          let display = 'black';
-          if (props.row.original.promedio < 0) {
-            display = 'red';
-          } else {
-            display = 'green';
-          }
           return (
-            <div
-              style={{ textAlign: 'right', fontWeight: 'bold', color: display }}
-            >
-              {formatDec(props.row.original.promedio)}
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.Julio)}
+            </div>
+          );
+        },
+      },
+      {
+        Header: 'Agosto',
+        accessor: 'Agosto',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.Agosto)}
+            </div>
+          );
+        },
+      },
+      {
+        Header: 'Septiembre',
+        accessor: 'Septiembre',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.Septiembre)}
+            </div>
+          );
+        },
+      },
+      {
+        Header: 'Octubre',
+        accessor: 'Octubre',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.Octubre)}
+            </div>
+          );
+        },
+      },
+      {
+        Header: 'Noviembre',
+        accessor: 'Noviembre',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.Noviembre)}
+            </div>
+          );
+        },
+      },
+      {
+        Header: 'Diciembre',
+        accessor: 'Diciembre',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.Diciembre)}
             </div>
           );
         },
@@ -185,7 +195,7 @@ export default function PorCanal() {
     []
   );
 
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
     refetch();
   };
 
@@ -195,36 +205,28 @@ export default function PorCanal() {
 
   return (
     <>
-      <h2>Orden Sugerida de PT</h2>
+      <h2>Ventas por Unidades Mensuales</h2>
       {/* Row 1 */}
       <Row>
         {/* Row 1 - Col 1 */}
         <Col lg={4} md={4} sm={6}>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            {/* Stock */}
+            {/* Fecha Inicio */}
             <Form.Group as={Row} className='mb-2'>
               <Form.Label column sm={labelSize}>
-                Stock:
+                Inicio:
               </Form.Label>
               <Col sm={inputSize}>
-                <SelectField
-                  control={control}
-                  name='stock'
-                  options={dropDownOptions}
-                />
+                <DateField control={control} name='fechaIni' />
               </Col>
             </Form.Group>
-            {/* Producción */}
+            {/* Fecha Fin */}
             <Form.Group as={Row} className='mb-2'>
               <Form.Label column sm={labelSize}>
-                Producción:
+                Fin:
               </Form.Label>
               <Col sm={inputSize}>
-                <SelectField
-                  control={control}
-                  name='produccion'
-                  options={dropDownOptions}
-                />
+                <DateField control={control} name='fechaFin' />
               </Col>
             </Form.Group>
             {/* Submit */}
@@ -240,21 +242,7 @@ export default function PorCanal() {
           </Form>
         </Col>
         {/* Row 1 - Col 2 */}
-        <Col lg={4} md={4} sm={6}>
-          {/* Bodegas */}
-          <Form.Group as={Row} className='mb-2'>
-            <Form.Label column sm={labelSize}>
-              Bodegas:
-            </Form.Label>
-            <Col sm={inputSize}>
-              <CheckboxFieldGroup
-                control={control}
-                name='bodegas'
-                options={checkboxOptions}
-              />
-            </Col>
-          </Form.Group>
-        </Col>
+        <Col></Col>
       </Row>
       {/* Row 2 */}
       <br />

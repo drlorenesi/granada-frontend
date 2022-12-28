@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -23,12 +23,15 @@ export default function ProductoDetalle() {
 
   const { isLoading, isError, error, data } = useGetProducto(id);
 
-  const defaultValues = {
-    estatus: data?.data?.rows[0].estatus || '',
-    codigo: data?.data?.rows[0].codigo || '',
-    codigo_alt: data?.data?.rows[0].codigo_alt || '',
-    descripcion: data?.data?.rows[0].descripcion || '',
-  };
+  const defaultValues = useMemo(
+    () => ({
+      estatus: data?.data?.rows[0].estatus || '',
+      codigo: data?.data?.rows[0].codigo || '',
+      codigo_alt: data?.data?.rows[0].codigo_alt || '',
+      descripcion: data?.data?.rows[0].descripcion || '',
+    }),
+    [data]
+  );
 
   const validationSchema = yup.object({
     codigo_alt: yup
@@ -54,15 +57,10 @@ export default function ProductoDetalle() {
 
   // effect runs when data has been fetched
   useEffect(() => {
-    reset({
-      estatus: data?.data?.rows[0].estatus || '',
-      codigo: data?.data?.rows[0].codigo || '',
-      codigo_alt: data?.data?.rows[0].codigo_alt || '',
-      descripcion: data?.data?.rows[0].descripcion || '',
-    });
-  }, [reset, data]);
+    reset(defaultValues);
+  }, [reset, defaultValues]);
 
-  const { mutateAsync: actualizar } = usePutProducto();
+  const { mutateAsync: actualizar } = usePutProducto(id);
 
   const onSubmit = async (data) => {
     await actualizar({ id, data });

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -77,112 +78,115 @@ export default function PorCanal() {
 
   // Data Table
   // ----------
-  const columns = [
-    { Header: 'Categoría', accessor: 'categoria' },
-    {
-      Header: 'Cant.',
-      accessor: 'cantidad_total',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {props.row.original.cantidad_total}
-          </div>
-        );
+  const columns = useMemo(
+    () => [
+      { Header: 'Categoría', accessor: 'categoria' },
+      {
+        Header: 'Cant.',
+        accessor: 'cantidad_total',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {props.row.original.cantidad_total}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Costo Total',
-      accessor: 'costo_total',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.costo_total)}
-          </div>
-        );
+      {
+        Header: 'Costo Total',
+        accessor: 'costo_total',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.costo_total)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Venta Total',
-      accessor: 'venta_total_siva',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.venta_total_siva)}
-          </div>
-        );
+      {
+        Header: 'Venta Total',
+        accessor: 'venta_total_siva',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.venta_total_siva)}
+            </div>
+          );
+        },
+        Footer: (props) => {
+          let total = props.rows.reduce(
+            (a, b) => a + b.values.venta_total_siva,
+            0
+          );
+          return (
+            <div style={{ textAlign: 'right' }}>
+              <b>{formatQ(total)}</b>
+            </div>
+          );
+        },
       },
-      Footer: (props) => {
-        let total = props.rows.reduce(
-          (a, b) => a + b.values.venta_total_siva,
-          0
-        );
-        return (
-          <div style={{ textAlign: 'right' }}>
-            <b>{formatQ(total)}</b>
-          </div>
-        );
+      {
+        Header: 'Profit',
+        accessor: 'profit',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.profit)}
+            </div>
+          );
+        },
+        Footer: (props) => {
+          let total = props.rows.reduce((a, b) => a + b.values.profit, 0);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              <b>{formatQ(total)}</b>
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Profit',
-      accessor: 'profit',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.profit)}
-          </div>
-        );
+      {
+        Header: 'Profit (%)',
+        accessor: 'profit_p',
+        Cell: (props) => {
+          let color;
+          if (props.row.original.profit_p < 0.25) {
+            color = 'red';
+          } else if (props.row.original.profit_p >= 0.35) {
+            color = 'green';
+          } else {
+            color = 'black';
+          }
+          return (
+            <div style={{ textAlign: 'right', color: `${color}` }}>
+              {formatP(props.row.original.profit_p)}
+            </div>
+          );
+        },
+        Footer: (props) => {
+          let venta = props.rows.reduce(
+            (a, b) => a + b.values.venta_total_siva,
+            0
+          );
+          let profit = props.rows.reduce((a, b) => a + b.values.profit, 0);
+          let resultado = profit / venta;
+          let color;
+          if (resultado < 0.25) {
+            color = 'red';
+          } else if (resultado >= 0.35) {
+            color = 'green';
+          } else {
+            color = 'black';
+          }
+          return (
+            <div style={{ textAlign: 'right', color: `${color}` }}>
+              <b>{formatP(resultado)}</b>
+            </div>
+          );
+        },
       },
-      Footer: (props) => {
-        let total = props.rows.reduce((a, b) => a + b.values.profit, 0);
-        return (
-          <div style={{ textAlign: 'right' }}>
-            <b>{formatQ(total)}</b>
-          </div>
-        );
-      },
-    },
-    {
-      Header: 'Profit (%)',
-      accessor: 'profit_p',
-      Cell: (props) => {
-        let color;
-        if (props.row.original.profit_p < 0.25) {
-          color = 'red';
-        } else if (props.row.original.profit_p >= 0.35) {
-          color = 'green';
-        } else {
-          color = 'black';
-        }
-        return (
-          <div style={{ textAlign: 'right', color: `${color}` }}>
-            {formatP(props.row.original.profit_p)}
-          </div>
-        );
-      },
-      Footer: (props) => {
-        let venta = props.rows.reduce(
-          (a, b) => a + b.values.venta_total_siva,
-          0
-        );
-        let profit = props.rows.reduce((a, b) => a + b.values.profit, 0);
-        let resultado = profit / venta;
-        let color;
-        if (resultado < 0.25) {
-          color = 'red';
-        } else if (resultado >= 0.35) {
-          color = 'green';
-        } else {
-          color = 'black';
-        }
-        return (
-          <div style={{ textAlign: 'right', color: `${color}` }}>
-            <b>{formatP(resultado)}</b>
-          </div>
-        );
-      },
-    },
-  ];
+    ],
+    []
+  );
 
   const onSubmit = async (data) => {
     refetch();

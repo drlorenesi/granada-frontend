@@ -91,6 +91,15 @@ export default function Navigation() {
                       toggleMenu={toggleMenu}
                       roles={[1, 2, 3]}
                     />
+                    {/* Por Unidades Mensuales */}
+                    <ProtectedNav
+                      type='dropdown'
+                      name='Por Unidades Mensuales'
+                      to='ventas/unidades-mensuales'
+                      menuOpen={menuOpen}
+                      toggleMenu={toggleMenu}
+                      roles={[1, 2, 3]}
+                    />
                   </NavDropdown>
                   {/* Producción */}
                   <NavDropdown title='Producción'>

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,7 +16,7 @@ import { useGetProductos } from '../../queries/useProductos';
 // Data Table
 import DataTable from '../../components/DataTable';
 // Utils
-// import { formatDec } from '../../utils/formatUtils';
+import { formatDec } from '../../utils/formatUtils';
 
 export default function PorCanal() {
   const tipoOptions = [
@@ -75,37 +76,78 @@ export default function PorCanal() {
 
   // Data Table
   // ----------
-  const columns = [
-    {
-      Header: 'Código',
-      accessor: 'codigo',
-      Cell: ({ row }) => {
-        return (
-          <Link
-            to={`/maestros/productos/${row.original.codigo}`}
-            // target='_blank'
-            // rel='noreferrer'
-            style={{ textDecoration: 'none' }}
-          >
-            {row.original.codigo}
-          </Link>
-        );
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Código',
+        accessor: 'codigo',
+        Cell: ({ row }) => {
+          return (
+            <Link
+              to={`/maestros/productos/${row.original.codigo}`}
+              // target='_blank'
+              // rel='noreferrer'
+              style={{ textDecoration: 'none' }}
+            >
+              {row.original.codigo}
+            </Link>
+          );
+        },
       },
-    },
-    { Header: 'Código Alt', accessor: 'codigo_alt' },
-    { Header: 'Descripción', accessor: 'descripcion' },
-    {
-      Header: 'Estatus',
-      accessor: 'estatus',
-      Cell: ({ row }) => {
-        return row.original.estatus === 'Inactivo' ? (
-          <span style={{ color: 'red' }}>Inactivo</span>
-        ) : (
-          <span style={{ color: 'green' }}>Activo</span>
-        );
+      { Header: 'Código Alt', accessor: 'codigo_alt' },
+      { Header: 'Descripción', accessor: 'descripcion' },
+      { Header: 'U/M', accessor: 'unidad' },
+      {
+        Header: 'Costo Std',
+        accessor: 'costo_std',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.costo_std)}
+            </div>
+          );
+        },
       },
-    },
-  ];
+      {
+        Header: 'Costo PP',
+        accessor: 'costo_pp',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.costo_pp)}
+            </div>
+          );
+        },
+      },
+      {
+        Header: 'Disponible',
+        accessor: 'disponible',
+        Cell: ({ row }) => {
+          return row.original.disponible < 0 ? (
+            <div style={{ textAlign: 'right', color: 'red' }}>
+              {formatDec(row.original.disponible)}
+            </div>
+          ) : (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(row.original.disponible)}
+            </div>
+          );
+        },
+      },
+      {
+        Header: 'Estatus',
+        accessor: 'estatus',
+        Cell: ({ row }) => {
+          return row.original.estatus === 'Inactivo' ? (
+            <span style={{ color: 'red' }}>Inactivo</span>
+          ) : (
+            <span style={{ color: 'green' }}>Activo</span>
+          );
+        },
+      },
+    ],
+    []
+  );
 
   const onSubmit = async (data) => {
     refetch();

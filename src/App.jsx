@@ -22,6 +22,7 @@ import NoAutorizado from './pages/NoAutorizado';
 import PorCanal from './pages/ventas/PorCanal';
 import PorProducto from './pages/ventas/PorProducto';
 import PorCategoria from './pages/ventas/PorCategoria';
+import PorUnidadesMensuales from './pages/ventas/PorUnidadesMensuales';
 // Producción
 import SugeridoPT from './pages/produccion/SugeridoPT';
 import SugeridoMA from './pages/produccion/SugeridoMA';
@@ -73,6 +74,10 @@ export default function App() {
           <Route path='ventas/canal' element={<PorCanal />} />
           <Route path='ventas/producto' element={<PorProducto />} />
           <Route path='ventas/categoria' element={<PorCategoria />} />
+          <Route
+            path='ventas/unidades-mensuales'
+            element={<PorUnidadesMensuales />}
+          />
         </Route>
         {/* Producción */}
         <Route element={<ProtectedOutlet roles={[1, 2, 3]} />}>

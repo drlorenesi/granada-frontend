@@ -1,5 +1,5 @@
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -43,13 +43,16 @@ export default function Usuario() {
     error,
   } = useGetUsuario(!!id, id, onError);
 
-  const defaultValues = {
-    nombre: data?.data.nombre || '',
-    apellido: data?.data.apellido || '',
-    extension: data?.data.extension || '',
-    email: data?.data.email || '',
-    role: data?.data.role.nivel || '',
-  };
+  const defaultValues = useMemo(
+    () => ({
+      nombre: data?.data.nombre || '',
+      apellido: data?.data.apellido || '',
+      extension: data?.data.extension || '',
+      email: data?.data.email || '',
+      role: data?.data.role.nivel || '',
+    }),
+    [data]
+  );
 
   const validationSchema = yup.object({
     nombre: yup
@@ -84,14 +87,8 @@ export default function Usuario() {
   // effect runs when data has been fetched
   useEffect(() => {
     // reset form with user data
-    reset({
-      nombre: data?.data.nombre || '',
-      apellido: data?.data.apellido || '',
-      extension: data?.data.extension || '',
-      email: data?.data.email || '',
-      role: data?.data.role.nivel || '',
-    });
-  }, [reset, data]);
+    reset(defaultValues);
+  }, [reset, defaultValues]);
 
   const { mutateAsync: actualizar } = usePutUsuario();
 

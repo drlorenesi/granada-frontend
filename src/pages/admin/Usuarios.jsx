@@ -1,3 +1,4 @@
+import { useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaEdit, FaCheckCircle, FaStopCircle } from 'react-icons/fa';
 // Bootstrap
@@ -24,6 +25,97 @@ export default function Usuarios() {
   const { mutateAsync: suspender } = useSuspender();
   const { mutateAsync: restablecer } = useRestablecer();
 
+  const handleEdit = useCallback(
+    (id) => navigate(`/admin/usuarios/${id}`),
+    [navigate]
+  );
+
+  const handleSuspend = useCallback(
+    async (id) => await suspender(id),
+    [suspender]
+  );
+
+  const handleRestablecer = useCallback(
+    async (id) => await restablecer(id),
+    [restablecer]
+  );
+
+  // Data Table
+  // ----------
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Nombre',
+        accessor: 'nombre',
+        Cell: ({ row }) => {
+          return (
+            <span>
+              {row.original.nombre} {row.original.apellido}
+            </span>
+          );
+        },
+      },
+      { Header: 'Ext.', accessor: 'extension' },
+      { Header: 'Email', accessor: 'email' },
+      { Header: 'Role', accessor: 'role.descripcion' },
+      {
+        Header: 'Verificado',
+        Cell: ({ row }) => (row.original.verificado ? 'Sí' : 'Pendiente'),
+      },
+      {
+        Header: 'Ingreso Actual',
+        Cell: ({ row }) => formatDateMed(new Date(row.original.ingresoActual)),
+      },
+      {
+        Header: 'Estatus',
+        Cell: ({ row }) => {
+          return row.original.suspendido ? (
+            <span style={{ color: 'red' }}>Suspendido</span>
+          ) : (
+            <span style={{ color: 'green' }}>Activo</span>
+          );
+        },
+      },
+      {
+        Header: 'Acciones',
+        Cell: (props) => {
+          return (
+            <div className='text-nowrap' style={{ textAlign: 'center' }}>
+              <Button
+                size='sm'
+                variant='primary'
+                onClick={() => handleEdit(props.row.original._id)}
+              >
+                <FaEdit />
+              </Button>{' '}
+              <OverlayTrigger
+                overlay={<Tooltip>Reestablecer a usuario</Tooltip>}
+              >
+                <Button
+                  size='sm'
+                  variant='success'
+                  onClick={() => handleRestablecer(props.row.original._id)}
+                >
+                  <FaCheckCircle />
+                </Button>
+              </OverlayTrigger>{' '}
+              <OverlayTrigger overlay={<Tooltip>Suspender a usuario</Tooltip>}>
+                <Button
+                  size='sm'
+                  variant='danger'
+                  onClick={() => handleSuspend(props.row.original._id)}
+                >
+                  <FaStopCircle />
+                </Button>
+              </OverlayTrigger>
+            </div>
+          );
+        },
+      },
+    ],
+    [handleEdit, handleRestablecer, handleSuspend]
+  );
+
   if (isLoading) {
     return <Loader />;
   }
@@ -31,89 +123,6 @@ export default function Usuarios() {
   if (isError) {
     return <ErrorMessage error={error.message} />;
   }
-
-  const handleEdit = (id) => {
-    navigate(`/admin/usuarios/${id}`);
-  };
-
-  const handleSuspend = async (id) => {
-    await suspender(id);
-  };
-
-  const handleRestablecer = async (id) => {
-    await restablecer(id);
-  };
-
-  // Data Table
-  // ----------
-  const columns = [
-    {
-      Header: 'Nombre',
-      accessor: 'nombre',
-      Cell: ({ row }) => {
-        return (
-          <span>
-            {row.original.nombre} {row.original.apellido}
-          </span>
-        );
-      },
-    },
-    { Header: 'Ext.', accessor: 'extension' },
-    { Header: 'Email', accessor: 'email' },
-    { Header: 'Role', accessor: 'role.descripcion' },
-    {
-      Header: 'Verificado',
-      Cell: ({ row }) => (row.original.verificado ? 'Sí' : 'Pendiente'),
-    },
-    {
-      Header: 'Ingreso Actual',
-      Cell: ({ row }) => formatDateMed(new Date(row.original.ingresoActual)),
-    },
-    {
-      Header: 'Estatus',
-      Cell: ({ row }) => {
-        return row.original.suspendido ? (
-          <span style={{ color: 'red' }}>Suspendido</span>
-        ) : (
-          <span style={{ color: 'green' }}>Activo</span>
-        );
-      },
-    },
-    {
-      Header: 'Acciones',
-      Cell: (props) => {
-        return (
-          <div className='text-nowrap' style={{ textAlign: 'center' }}>
-            <Button
-              size='sm'
-              variant='primary'
-              onClick={() => handleEdit(props.row.original._id)}
-            >
-              <FaEdit />
-            </Button>{' '}
-            <OverlayTrigger overlay={<Tooltip>Reestablecer a usuario</Tooltip>}>
-              <Button
-                size='sm'
-                variant='success'
-                onClick={() => handleRestablecer(props.row.original._id)}
-              >
-                <FaCheckCircle />
-              </Button>
-            </OverlayTrigger>{' '}
-            <OverlayTrigger overlay={<Tooltip>Suspender a usuario</Tooltip>}>
-              <Button
-                size='sm'
-                variant='danger'
-                onClick={() => handleSuspend(props.row.original._id)}
-              >
-                <FaStopCircle />
-              </Button>
-            </OverlayTrigger>
-          </div>
-        );
-      },
-    },
-  ];
 
   return (
     <>

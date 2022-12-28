@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -66,61 +67,64 @@ export default function PorCanal() {
 
   // Data Table
   // ----------
-  const columns = [
-    { Header: 'Canal', accessor: 'canal' },
-    {
-      Header: 'Total Ventas sIVA',
-      accessor: 'total_ventas_siva',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.total_ventas_siva)}
-          </div>
-        );
+  const columns = useMemo(
+    () => [
+      { Header: 'Canal', accessor: 'canal' },
+      {
+        Header: 'Total Ventas sIVA',
+        accessor: 'total_ventas_siva',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.total_ventas_siva)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Total NC Devolución sIVA',
-      accessor: 'total_nc_devolucion_siva',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.total_nc_devolucion_siva)}
-          </div>
-        );
+      {
+        Header: 'Total NC Devolución sIVA',
+        accessor: 'total_nc_devolucion_siva',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.total_nc_devolucion_siva)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Total NC Valor sIVA',
-      accessor: 'total_nc_valor_siva',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.total_nc_valor_siva)}
-          </div>
-        );
+      {
+        Header: 'Total NC Valor sIVA',
+        accessor: 'total_nc_valor_siva',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.total_nc_valor_siva)}
+            </div>
+          );
+        },
       },
-    },
-    {
-      Header: 'Total',
-      accessor: 'total',
-      Cell: (props) => {
-        return (
-          <div style={{ textAlign: 'right' }}>
-            {formatDec(props.row.original.total)}
-          </div>
-        );
+      {
+        Header: 'Total',
+        accessor: 'total',
+        Cell: (props) => {
+          return (
+            <div style={{ textAlign: 'right' }}>
+              {formatDec(props.row.original.total)}
+            </div>
+          );
+        },
+        Footer: (props) => {
+          let total = props.rows.reduce((a, b) => a + b.values.total, 0);
+          return (
+            <div style={{ textAlign: 'right' }}>
+              <b>{formatQ(total)}</b>
+            </div>
+          );
+        },
       },
-      Footer: (props) => {
-        let total = props.rows.reduce((a, b) => a + b.values.total, 0);
-        return (
-          <div style={{ textAlign: 'right' }}>
-            <b>{formatQ(total)}</b>
-          </div>
-        );
-      },
-    },
-  ];
+    ],
+    []
+  );
 
   const onSubmit = async (data) => {
     refetch();

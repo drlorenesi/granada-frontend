@@ -25,7 +25,10 @@ export default function Input({ control, name, message, ...props }) {
             calendarStartDay={0}
             isClearable
             // showWeekNumbers
-            onFocus={(e) => e.target.blur()}
+            // Do not show keyboard on smaller devices
+            onFocus={(e) =>
+              window.screen.width <= 768 ? e.target.blur() : null
+            }
             showYearDropdown
             yearDropdownItemNumber={7}
             scrollableYearDropdown

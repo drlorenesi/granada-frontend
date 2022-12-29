@@ -5,6 +5,7 @@ import { FaEdit, FaCheckCircle, FaStopCircle } from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import Badge from 'react-bootstrap/Badge';
 // Components
 import Loader from '../../components/Loader';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -70,9 +71,17 @@ export default function Usuarios() {
         Header: 'Estatus',
         Cell: ({ row }) => {
           return row.original.suspendido ? (
-            <span style={{ color: 'red' }}>Suspendido</span>
+            <div style={{ textAlign: 'center' }}>
+              <Badge pill bg='danger'>
+                Suspendido
+              </Badge>
+            </div>
           ) : (
-            <span style={{ color: 'green' }}>Activo</span>
+            <div style={{ textAlign: 'center' }}>
+              <Badge pill bg='success'>
+                Activo
+              </Badge>
+            </div>
           );
         },
       },

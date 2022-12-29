@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Badge from 'react-bootstrap/Badge';
 // Form Inputs
 import SelectField from '../../components/formInputs/SelectField';
 import CheckboxFieldGroup from '../../components/formInputs/CheckboxFieldGroup';
@@ -139,9 +140,17 @@ export default function PorCanal() {
         accessor: 'estatus',
         Cell: ({ row }) => {
           return row.original.estatus === 'Inactivo' ? (
-            <span style={{ color: 'red' }}>Inactivo</span>
+            <div style={{ textAlign: 'center' }}>
+              <Badge pill bg='danger'>
+                Inactivo
+              </Badge>
+            </div>
           ) : (
-            <span style={{ color: 'green' }}>Activo</span>
+            <div style={{ textAlign: 'center' }}>
+              <Badge pill bg='success' style={{ textAlign: 'right' }}>
+                Activo
+              </Badge>
+            </div>
           );
         },
       },

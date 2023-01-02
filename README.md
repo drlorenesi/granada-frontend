@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# granada-client
+
+Front End para sistema de reportes de Fábrica Granada.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -140,7 +140,7 @@ export default function Navigation() {
                       to='maestros/productos'
                       menuOpen={menuOpen}
                       toggleMenu={toggleMenu}
-                      roles={[1]}
+                      roles={[1, 2]}
                     />
                   </NavDropdown>
                   {/* Posts */}

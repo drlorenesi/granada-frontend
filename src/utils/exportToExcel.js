@@ -14,7 +14,7 @@ export default function exportToExcel(ref) {
   // Get table
   let table = ref.current; // table is the id
   // Convert the table to an Excel sheet
-  let wb = utils.table_to_book(table, { sheet: 'Customer Report' });
+  let wb = utils.table_to_book(table, { sheet: 'Hoja 1' });
   // Write sheet to blobl
   let blob = new Blob([s2ab(write(wb, { bookType: 'xlsx', type: 'binary' }))], {
     type: 'application/octet-stream',
